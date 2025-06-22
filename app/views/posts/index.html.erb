@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>All Posts</h1>
+  <%= link_to "New Post", new_post_path, class: "btn btn-primary" %>
+</div>
+
+<!-- Search Form -->
+<div class="row mb-4">
+  <div class="col-md-6">
+    <%= form_with url: posts_path, method: :get, local: true, class: "d-flex" do |form| %>
+      <%= form.text_field :search, placeholder: "Search posts...", 
+                          value: params[:search], 
+                          class: "form-control me-2" %>
+      <%= form.submit "Search", class: "btn btn-outline-secondary" %>
+    <% end %>
+  </div>
+</div>
+
+<% if params[:search].present? %>
+  <div class="mb-3">
+    <p class="text-muted">
+      Showing results for "<strong><%= params[:search] %></strong>"
+      <%= link_to "Clear", posts_path, class: "btn btn-sm btn-outline-secondary ms-2" %>
+    </p>
+  </div>
+<% end %>
+
+<div id="posts">
+  <% @posts.each do |post| %>
+    <%= render 'post_card', post: post %>
+  <% end %>
+</div>
+
+<% if @posts.empty? %>
+  <div class="text-center mt-5">
+    <% if params[:search].present? %>
+      <h3>No posts found</h3>
+      <p>Try searching with different keywords.</p>
+    <% else %>
+      <h3>No posts yet</h3>
+      <p>Be the first to create a post!</p>
+    <% end %>
+    <%= link_to "Create Post", new_post_path, class: "btn btn-primary" %>
+  </div>
+<% end %>

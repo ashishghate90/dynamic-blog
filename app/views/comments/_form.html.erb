@@ -1,0 +1,23 @@
+<%= form_with(model: [@post, comment], local: false, data: { controller: "form" }) do |form| %>
+  <% if comment.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% comment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :content, "Add a comment", class: "form-label" %>
+    <%= form.text_area :content, rows: 3, class: "form-control", 
+                       placeholder: "Write your comment here...",
+                       data: { action: "input->form#enableSubmit" } %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Post Comment", class: "btn btn-primary", 
+                    data: { form_target: "submit" } %>
+  </div>
+<% end %>

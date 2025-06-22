@@ -1,0 +1,10 @@
+<% if comments.any? %>
+  <h4 class="mb-4">Comments (<%= comments.count %>)</h4>
+  <% comments.each do |comment| %>
+    <%= render 'comments/comment', comment: comment %>
+  <% end %>
+<% else %>
+  <div class="text-center py-4">
+    <p class="text-muted">No comments yet. Be the first to comment!</p>
+  </div>
+<% end %>

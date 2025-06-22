@@ -1,0 +1,87 @@
+<%= turbo_stream_from "comments_#{@post.id}" %>
+
+<div class="row">
+  <div class="col-lg-8">
+    <article class="mb-4">
+      <header class="mb-4">
+        <h1 class="fw-bolder mb-1"><%= @post.title %></h1>
+        <div class="text-muted fst-italic mb-2">
+          Posted by <%= @post.user.display_name %> on <%= @post.created_at.strftime("%B %d, %Y") %>
+        </div>
+        <% if user_signed_in? && @post.user == current_user %>
+          <div class="mb-3">
+            <%= link_to "Edit Post", edit_post_path(@post), class: "btn btn-primary btn-sm" %>
+            <%= link_to "Delete Post", @post, method: :delete, 
+                        confirm: "Are you sure?", class: "btn btn-danger btn-sm" %>
+          </div>
+        <% end %>
+      </header>
+      <section class="mb-5">
+        <p class="fs-5 mb-4"><%= simple_format(@post.content) %></p>
+      </section>
+    </article>
+
+    <!-- Comments section -->
+    <% if user_signed_in? %>
+      <section class="mb-5">
+        <div class="card bg-light">
+          <div class="card-body">
+            <h5 class="card-title">Leave a Comment</h5>
+            <div id="comment_form">
+              <%= render 'comments/form', post: @post, comment: @comment %>
+            </div>
+          </div>
+        </div>
+      </section>
+    <% else %>
+      <section class="mb-5">
+        <div class="card bg-light">
+          <div class="card-body">
+            <p class="mb-0">
+              <%= link_to "Sign in", new_user_session_path %> to leave a comment.
+            </p>
+          </div>
+        </div>
+      </section>
+    <% end %>
+
+    <div id="comments">
+      <% if @comments.any? %>
+        <h4 class="mb-4">Comments (<%= @comments.count %>)</h4>
+        <div id="comments_list">
+          <% @comments.each do |comment| %>
+            <div class="comment-wrapper" id="comment_wrapper_<%= comment.id %>">
+              <!-- Show full comment with actions for current user -->
+              <% if user_signed_in? && comment.user == current_user %>
+                <%= render 'comments/comment', comment: comment %>
+              <% else %>
+                <!-- Show broadcast version for other users -->
+                <%= render 'comments/comment_broadcast', comment: comment %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-4" id="no_comments">
+          <p class="text-muted">No comments yet. Be the first to comment!</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card mb-4">
+      <div class="card-header">Recent Posts</div>
+      <div class="card-body">
+        <% Post.recent.limit(5).each do |recent_post| %>
+          <div class="mb-2">
+            <%= link_to recent_post.title, recent_post, class: "text-decoration-none" %>
+            <small class="text-muted d-block">
+              by <%= recent_post.user.display_name %> • <%= time_ago_in_words(recent_post.created_at) %> ago
+            </small>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
