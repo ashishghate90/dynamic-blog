@@ -23,21 +23,23 @@ Real-time updates: All users viewing the post will see new comments, updates, an
 
 ## Installation
 Clone the repository:
-git clone https://github.com/your-username/blog-app.git
+`git clone https://github.com/your-username/blog-app.git`
 
-cd blog-app
+$cd blog-app
 
-Install dependencies:
-bundle install
+Install dependencies inside the `blog-app` directory:
+`bundle install`
 
 Setup the database:
-rails db:create
-rails db:migrate
+
+`rails db:create`
+
+`rails db:migrate`
 
 Start the server:
-rails server
+`rails server`
 
-Open your browser and visit http://localhost:3000 to see the app in action.
+Open your browser and visit `http://localhost:3000` to see the app in action.
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a pull request or open an issue for any improvements or bug fixes.
